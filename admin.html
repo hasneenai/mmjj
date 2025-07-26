@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | نظام التعليم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .login-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .login-form.dark-mode {
+            background-color: #2d2d2d;
+        }
+
+        .form-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--dark-color);
+        }
+
+        .login-form.dark-mode .form-title {
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .admin-header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+            transition: var(--transition);
+        }
+
+        .admin-nav-links a:hover {
+            color: var(--light-color);
+        }
+
+        .admin-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+        }
+
+        .admin-content.dark-mode {
+            background-color: #2d2d2d;
+        }
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-content.dark-mode .section-title {
+            color: white;
+        }
+
+        .teachers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .teacher-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .teacher-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .teacher-card.dark-mode {
+            background-color: #2d2d2d;
+        }
+
+        .teacher-img {
+            height: 200px;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .teacher-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .teacher-img .initials {
+            position: absolute;
+            font-size: 50px;
+            color: var(--dark-color);
+        }
+
+        .teacher-info {
+            padding: 15px;
+        }
+
+        .teacher-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .teacher-desc {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .teacher-card.dark-mode .teacher-desc {
+            color: #ccc;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #219653;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #d35400;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            resize: vertical;
+        }
+
+        .lectures-list {
+            margin-top: 20px;
+        }
+
+        .lecture-item {
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lecture-item.dark-mode {
+            background-color: #3d3d3d;
+        }
+
+        .lecture-title {
+            font-weight: bold;
+        }
+
+        .upload-btn {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .upload-btn input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 50px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .copyright {
+            margin-bottom: 10px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 20px;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            color: var(--light-color);
+        }
+
+        .telegram-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .telegram-link:hover {
+            color: var(--light-color);
+        }
+
+        .home-link {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: var(--transition);
+        }
+
+        .home-link:hover {
+            color: var(--light-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .teachers-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- نموذج تسجيل الدخول -->
+    <div class="login-modal" id="login-modal">
+        <button class="close-btn" id="close-login-modal">✕</button>
+        <div class="login-form">
+            <h2 class="form-title">تسجيل دخول الأدمن</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">اسم المستخدم</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">كلمة المرور</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="submit-btn">دخول</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- لوحة التحكم الخاصة بالأدمن -->
+    <div class="admin-panel" id="admin-panel" style="display: none;">
+        <header class="admin-header">
+            <div class="container admin-nav">
+                <div class="logo">
+                    <img src="https://via.placeholder.com/30" alt="Logo">
+                    لوحة التحكم
+                </div>
+                <nav class="admin-nav-links">
+                    <a href="#" id="admin-home-link">الرئيسية</a>
+                    <a href="#" id="add-teacher-link">إضافة مدرس</a>
+                    <a href="index.html" class="home-link">الصفحة الرئيسية</a>
+                    <a href="#" id="logout-link">تسجيل خروج</a>
+                    <button class="mode-toggle" id="admin-mode-toggle">🌙</button>
+                </nav>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- قسم إدارة المدرسين -->
+            <div class="admin-content" id="admin-teachers-section">
+                <h2 class="section-title">
+                    <i class="fas fa-users-cog"></i>
+                    إدارة المدرسين
+                </h2>
+                <div class="teachers-grid" id="admin-teachers-container">
+                    <!-- سيتم ملء هذا القسم بالبيانات من localStorage -->
+                </div>
+            </div>
+
+            <!-- قسم إضافة مدرس جديد -->
+            <div class="admin-content" id="add-teacher-section" style="display: none;">
+                <h2 class="section-title">
+                    <i class="fas fa-user-plus"></i>
+                    إضافة مدرس جديد
+                </h2>
+                <form id="add-teacher-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="teacher-name">اسم المدرس</label>
+                            <input type="text" id="teacher-name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher-desc">وصف المدرس</label>
+                        <textarea id="teacher-desc" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher-image">صورة المدرس (اختياري)</label>
+                        <div class="upload-btn">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-upload"></i> اختر صورة
+                            </button>
+                            <input type="file" id="teacher-image" accept="image/*">
+                        </div>
+                        <small>يمكنك ترك هذا الحقل فارغاً لاستخدام الأحرف الأولى كصورة</small>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit" class="btn btn-primary">حفظ</button>
+                        <button type="button" class="btn btn-danger" id="cancel-add-teacher">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- قسم إدارة المحاضرات لمدرس معين -->
+            <div class="admin-content" id="manage-lectures-section" style="display: none;">
+                <h2 class="section-title" id="manage-lectures-title">
+                    <i class="fas fa-book"></i>
+                    إدارة محاضرات الأستاذ
+                </h2>
+                <button class="btn btn-primary" id="add-lecture-btn">
+                    <i class="fas fa-plus"></i> إضافة فصل جديد
+                </button>
+                <div class="lectures-list" id="admin-lectures-container">
+                    <!-- سيتم ملء هذا القسم بالبيانات من localStorage -->
+                </div>
+            </div>
+
+            <!-- قسم إضافة/تعديل فصل -->
+            <div class="admin-content" id="add-lecture-section" style="display: none;">
+                <h2 class="section-title" id="lecture-form-title">
+                    <i class="fas fa-plus-circle"></i>
+                    إضافة فصل جديد
+                </h2>
+                <form id="lecture-form">
+                    <input type="hidden" id="lecture-id">
+                    <input type="hidden" id="teacher-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lecture-title">عنوان الفصل</label>
+                            <input type="text" id="lecture-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lecture-link">رابط الفصل</label>
+                            <input type="url" id="lecture-link" required>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit" class="btn btn-primary" id="save-lecture-btn">
+                            <i class="fas fa-save"></i> حفظ
+                        </button>
+                        <button type="button" class="btn btn-danger" id="cancel-lecture-btn">
+                            <i class="fas fa-times"></i> إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <div class="container footer-content">
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+                <div class="copyright">جميع الحقوق محفوظة &copy; Max 2025</div>
+                <a href="https://t.me/max10max10bot" class="telegram-link" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                    <span>بوت ملازم ماكس</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // بيانات التطبيق
+        let teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+        let currentTeacherId = null;
+        let currentLectureId = null;
+        let isEditMode = false;
+        let darkMode = localStorage.getItem('darkMode') === 'true';
+
+        // عناصر DOM
+        const loginModal = document.getElementById('login-modal');
+        const loginForm = document.getElementById('login-form');
+        const closeLoginModal = document.getElementById('close-login-modal');
+        const loginError = document.getElementById('login-error');
+        const adminPanel = document.getElementById('admin-panel');
+        const adminTeachersContainer = document.getElementById('admin-teachers-container');
+        const addTeacherSection = document.getElementById('add-teacher-section');
+        const addTeacherForm = document.getElementById('add-teacher-form');
+        const cancelAddTeacher = document.getElementById('cancel-add-teacher');
+        const manageLecturesSection = document.getElementById('manage-lectures-section');
+        const adminLecturesContainer = document.getElementById('admin-lectures-container');
+        const addLectureBtn = document.getElementById('add-lecture-btn');
+        const addLectureSection = document.getElementById('add-lecture-section');
+        const lectureForm = document.getElementById('lecture-form');
+        const cancelLectureBtn = document.getElementById('cancel-lecture-btn');
+        const adminModeToggle = document.getElementById('admin-mode-toggle');
+        const logoutLink = document.getElementById('logout-link');
+        const addTeacherLink = document.getElementById('add-teacher-link');
+        const adminHomeLink = document.getElementById('admin-home-link');
+        const adminTeachersSection = document.getElementById('admin-teachers-section');
+        const teacherImageInput = document.getElementById('teacher-image');
+
+        // تهيئة الوضع الليلي
+        function initDarkMode() {
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.querySelectorAll('.teacher-card, .admin-content, .login-form').forEach(el => {
+                    el.classList.add('dark-mode');
+                });
+                document.querySelectorAll('.lecture-item').forEach(el => {
+                    el.classList.add('dark-mode');
+                });
+                adminModeToggle.textContent = '☀️';
+            }
+        }
+
+        // تحميل البيانات الأولية
+        function loadData() {
+            renderTeachers();
+            initDarkMode();
+            showLoginModal();
+        }
+
+        // عرض نموذج تسجيل الدخول
+        function showLoginModal() {
+            loginModal.style.display = 'flex';
+            adminPanel.style.display = 'none';
+        }
+
+        // عرض المدرسين
+        function renderTeachers() {
+            adminTeachersContainer.innerHTML = '';
+
+            if (teachers.length === 0) {
+                adminTeachersContainer.innerHTML = '<p>لا يوجد مدرسون متاحون حالياً</p>';
+                return;
+            }
+
+            teachers.forEach(teacher => {
+                const adminTeacherCard = document.createElement('div');
+                adminTeacherCard.className = 'teacher-card';
+                if (darkMode) adminTeacherCard.classList.add('dark-mode');
+                
+                let imageContent = '';
+                if (teacher.image) {
+                    imageContent = `<img src="${teacher.image}" alt="${teacher.name}">`;
+                } else {
+                    imageContent = `<div class="initials">${teacher.name.charAt(0)}</div>`;
+                }
+                
+                adminTeacherCard.innerHTML = `
+                    <div class="teacher-img">
+                        ${imageContent}
+                    </div>
+                    <div class="teacher-info">
+                        <h3 class="teacher-name">${teacher.name}</h3>
+                        <p class="teacher-desc">${teacher.desc}</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary manage-lectures-btn" data-teacher-id="${teacher.id}">
+                                <i class="fas fa-book"></i> إدارة المحاضرات
+                            </button>
+                            <button class="btn btn-warning edit-teacher-btn" data-teacher-id="${teacher.id}">
+                                <i class="fas fa-edit"></i> تعديل
+                            </button>
+                            <button class="btn btn-danger delete-teacher-btn" data-teacher-id="${teacher.id}">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </div>
+                    </div>
+                `;
+                adminTeachersContainer.appendChild(adminTeacherCard);
+            });
+
+            // إضافة مستمعي الأحداث
+            document.querySelectorAll('.manage-lectures-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const teacherId = btn.getAttribute('data-teacher-id');
+                    showManageLectures(teacherId);
+                });
+            });
+
+            document.querySelectorAll('.edit-teacher-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const teacherId = btn.getAttribute('data-teacher-id');
+                    editTeacher(teacherId);
+                });
+            });
+
+            document.querySelectorAll('.delete-teacher-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const teacherId = btn.getAttribute('data-teacher-id');
+                    if (confirm('هل أنت متأكد من حذف هذا المدرس وجميع محاضراته؟')) {
+                        deleteTeacher(teacherId);
+                    }
+                });
+            });
+        }
+
+        // عرض واجهة إدارة المحاضرات للأدمن
+        function showManageLectures(teacherId) {
+            currentTeacherId = teacherId;
+            const teacher = teachers.find(t => t.id === teacherId);
+            if (!teacher) return;
+
+            document.getElementById('manage-lectures-title').textContent = `إدارة محاضرات الأستاذ ${teacher.name}`;
+            adminLecturesContainer.innerHTML = '';
+
+            if (!teacher.lectures || teacher.lectures.length === 0) {
+                adminLecturesContainer.innerHTML = '<p>لا توجد محاضرات لهذا المدرس</p>';
+            } else {
+                teacher.lectures.forEach(lecture => {
+                    const lectureItem = document.createElement('div');
+                    lectureItem.className = 'lecture-item';
+                    if (darkMode) lectureItem.classList.add('dark-mode');
+                    lectureItem.innerHTML = `
+                        <span class="lecture-title">${lecture.title}</span>
+                        <div>
+                            <a href="${lecture.link}" class="btn btn-primary" target="_blank">
+                                <i class="fas fa-eye"></i> عرض
+                            </a>
+                            <button class="btn btn-warning edit-lecture-btn" data-lecture-id="${lecture.id}">
+                                <i class="fas fa-edit"></i> تعديل
+                            </button>
+                            <button class="btn btn-danger delete-lecture-btn" data-lecture-id="${lecture.id}">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </div>
+                    `;
+                    adminLecturesContainer.appendChild(lectureItem);
+                });
+
+                // إضافة مستمعي الأحداث للأزرار
+                document.querySelectorAll('.edit-lecture-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const lectureId = btn.getAttribute('data-lecture-id');
+                        editLecture(lectureId);
+                    });
+                });
+
+                document.querySelectorAll('.delete-lecture-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const lectureId = btn.getAttribute('data-lecture-id');
+                        if (confirm('هل أنت متأكد من حذف هذا الفصل؟')) {
+                            deleteLecture(lectureId);
+                        }
+                    });
+                });
+            }
+
+            adminTeachersSection.style.display = 'none';
+            addTeacherSection.style.display = 'none';
+            manageLecturesSection.style.display = 'block';
+            addLectureSection.style.display = 'none';
+        }
+
+        // عرض نموذج إضافة/تعديل مدرس
+        function showAddTeacherForm(editMode = false, teacherId = null) {
+            if (editMode) {
+                document.querySelector('#add-teacher-section .section-title').textContent = 'تعديل المدرس';
+                const teacher = teachers.find(t => t.id === teacherId);
+                if (teacher) {
+                    document.getElementById('teacher-name').value = teacher.name;
+                    document.getElementById('teacher-desc').value = teacher.desc;
+                    currentTeacherId = teacherId;
+                }
+                isEditMode = true;
+            } else {
+                document.querySelector('#add-teacher-section .section-title').textContent = 'إضافة مدرس جديد';
+                document.getElementById('teacher-name').value = '';
+                document.getElementById('teacher-desc').value = '';
+                currentTeacherId = null;
+                isEditMode = false;
+            }
+
+            adminTeachersSection.style.display = 'none';
+            manageLecturesSection.style.display = 'none';
+            addTeacherSection.style.display = 'block';
+        }
+
+        // عرض نموذج إضافة/تعديل فصل
+        function showAddLectureForm(editMode = false, lectureId = null) {
+            if (editMode) {
+                document.getElementById('lecture-form-title').textContent = 'تعديل الفصل';
+                const teacher = teachers.find(t => t.id === currentTeacherId);
+                if (teacher && teacher.lectures) {
+                    const lecture = teacher.lectures.find(l => l.id === lectureId);
+                    if (lecture) {
+                        document.getElementById('lecture-title').value = lecture.title;
+                        document.getElementById('lecture-link').value = lecture.link;
+                        document.getElementById('lecture-id').value = lectureId;
+                        currentLectureId = lectureId;
+                    }
+                }
+                isEditMode = true;
+            } else {
+                document.getElementById('lecture-form-title').textContent = 'إضافة فصل جديد';
+                document.getElementById('lecture-title').value = '';
+                document.getElementById('lecture-link').value = '';
+                document.getElementById('lecture-id').value = '';
+                currentLectureId = null;
+                isEditMode = false;
+            }
+
+            document.getElementById('teacher-id').value = currentTeacherId;
+            manageLecturesSection.style.display = 'block';
+            addLectureSection.style.display = 'block';
+        }
+
+        // تعديل مدرس
+        function editTeacher(teacherId) {
+            showAddTeacherForm(true, teacherId);
+        }
+
+        // تعديل فصل
+        function editLecture(lectureId) {
+            showAddLectureForm(true, lectureId);
+        }
+
+        // حذف مدرس
+        function deleteTeacher(teacherId) {
+            teachers = teachers.filter(t => t.id !== teacherId);
+            saveData();
+            renderTeachers();
+            if (currentTeacherId === teacherId) {
+                adminTeachersSection.style.display = 'block';
+                manageLecturesSection.style.display = 'none';
+                addLectureSection.style.display = 'none';
+                currentTeacherId = null;
+            }
+        }
+
+        // حذف فصل
+        function deleteLecture(lectureId) {
+            const teacherIndex = teachers.findIndex(t => t.id === currentTeacherId);
+            if (teacherIndex !== -1) {
+                if (!teachers[teacherIndex].lectures) teachers[teacherIndex].lectures = [];
+                teachers[teacherIndex].lectures = teachers[teacherIndex].lectures.filter(l => l.id !== lectureId);
+                saveData();
+                showManageLectures(currentTeacherId);
+            }
+        }
+
+        // حفظ البيانات في localStorage
+        function saveData() {
+            localStorage.setItem('teachers', JSON.stringify(teachers));
+        }
+
+        // تسجيل الدخول
+        function login(username, password) {
+            // بيانات تسجيل الدخول المشفرة (base64)
+            const encodedUsername = 'YWE='; // aa
+            const encodedPassword = 'YWE='; // aa
+
+            const inputUsername = btoa(unescape(encodeURIComponent(username)));
+            const inputPassword = btoa(unescape(encodeURIComponent(password)));
+
+            if (inputUsername === encodedUsername && inputPassword === encodedPassword) {
+                loginModal.style.display = 'none';
+                adminPanel.style.display = 'block';
+                renderTeachers();
+                initDarkMode();
+                return true;
+            } else {
+                loginError.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة';
+                loginError.style.display = 'block';
+                return false;
+            }
+        }
+
+        // تسجيل الخروج
+        function logout() {
+            window.location.href = 'index.html';
+        }
+
+        // تبديل الوضع الليلي/النهاري
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            localStorage.setItem('darkMode', darkMode);
+
+            document.body.classList.toggle('dark-mode');
+            document.querySelectorAll('.teacher-card, .admin-content, .login-form').forEach(el => {
+                el.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.lecture-item').forEach(el => {
+                el.classList.toggle('dark-mode');
+            });
+
+            if (darkMode) {
+                adminModeToggle.textContent = '☀️';
+            } else {
+                adminModeToggle.textContent = '🌙';
+            }
+        }
+
+        // تحميل صورة المدرس
+        function loadTeacherImage() {
+            return new Promise((resolve) => {
+                const file = teacherImageInput.files[0];
+                if (!file) {
+                    resolve(null);
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    resolve(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // مستمعي الأحداث
+        closeLoginModal.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            login(username, password);
+        });
+
+        addTeacherForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('teacher-name').value;
+            const desc = document.getElementById('teacher-desc').value;
+            const image = await loadTeacherImage();
+
+            if (isEditMode && currentTeacherId) {
+                // تعديل مدرس موجود
+                const teacherIndex = teachers.findIndex(t => t.id === currentTeacherId);
+                if (teacherIndex !== -1) {
+                    teachers[teacherIndex].name = name;
+                    teachers[teacherIndex].desc = desc;
+                    if (image) {
+                        teachers[teacherIndex].image = image;
+                    }
+                }
+            } else {
+                // إضافة مدرس جديد
+                const newTeacher = {
+                    id: Date.now().toString(),
+                    name,
+                    desc,
+                    lectures: []
+                };
+                if (image) {
+                    newTeacher.image = image;
+                }
+                teachers.push(newTeacher);
+            }
+
+            saveData();
+            renderTeachers();
+            adminTeachersSection.style.display = 'block';
+            addTeacherSection.style.display = 'none';
+            isEditMode = false;
+            currentTeacherId = null;
+            teacherImageInput.value = '';
+        });
+
+        cancelAddTeacher.addEventListener('click', () => {
+            adminTeachersSection.style.display = 'block';
+            addTeacherSection.style.display = 'none';
+            isEditMode = false;
+            currentTeacherId = null;
+            teacherImageInput.value = '';
+        });
+
+        addLectureBtn.addEventListener('click', () => {
+            showAddLectureForm();
+        });
+
+        lectureForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('lecture-title').value;
+            const link = document.getElementById('lecture-link').value;
+            const teacherId = document.getElementById('teacher-id').value;
+
+            const teacherIndex = teachers.findIndex(t => t.id === teacherId);
+            if (teacherIndex !== -1) {
+                if (!teachers[teacherIndex].lectures) teachers[teacherIndex].lectures = [];
+
+                if (isEditMode && currentLectureId) {
+                    // تعديل فصل موجود
+                    const lectureIndex = teachers[teacherIndex].lectures.findIndex(l => l.id === currentLectureId);
+                    if (lectureIndex !== -1) {
+                        teachers[teacherIndex].lectures[lectureIndex].title = title;
+                        teachers[teacherIndex].lectures[lectureIndex].link = link;
+                    }
+                } else {
+                    // إضافة فصل جديد
+                    const newLecture = {
+                        id: Date.now().toString(),
+                        title,
+                        link
+                    };
+                    teachers[teacherIndex].lectures.push(newLecture);
+                }
+
+                saveData();
+                showManageLectures(teacherId);
+                isEditMode = false;
+                currentLectureId = null;
+            }
+        });
+
+        cancelLectureBtn.addEventListener('click', () => {
+            addLectureSection.style.display = 'none';
+            isEditMode = false;
+            currentLectureId = null;
+        });
+
+        adminModeToggle.addEventListener('click', toggleDarkMode);
+
+        logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
+
+        addTeacherLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showAddTeacherForm();
+        });
+
+        adminHomeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            adminTeachersSection.style.display = 'block';
+            addTeacherSection.style.display = 'none';
+            manageLecturesSection.style.display = 'none';
+            addLectureSection.style.display = 'none';
+            currentTeacherId = null;
+            currentLectureId = null;
+        });
+
+        // تهيئة التطبيق عند التحميل
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
