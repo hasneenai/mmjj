@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام التعليم | Max 2025</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 8px 15px;
+            width: 300px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            width: 100%;
+            padding: 5px;
+        }
+
+        .search-bar i {
+            color: #777;
+        }
+
+        .mode-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .teachers-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .teachers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .teacher-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .teacher-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .teacher-card.dark-mode {
+            background-color: #2d2d2d;
+        }
+
+        .teacher-img {
+            height: 200px;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .teacher-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .teacher-img .initials {
+            position: absolute;
+            font-size: 50px;
+            color: var(--dark-color);
+        }
+
+        .teacher-info {
+            padding: 15px;
+        }
+
+        .teacher-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .teacher-desc {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .teacher-card.dark-mode .teacher-desc {
+            color: #ccc;
+        }
+
+        .view-btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .view-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .lectures-section {
+            margin-bottom: 40px;
+        }
+
+        .lectures-list {
+            margin-top: 20px;
+        }
+
+        .lecture-item {
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lecture-item.dark-mode {
+            background-color: #3d3d3d;
+        }
+
+        .lecture-title {
+            font-weight: bold;
+        }
+
+        .lecture-link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .lecture-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 50px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .copyright {
+            margin-bottom: 10px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 20px;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            color: var(--light-color);
+        }
+
+        .telegram-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .telegram-link:hover {
+            color: var(--light-color);
+        }
+
+        .admin-link {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: var(--transition);
+        }
+
+        .admin-link:hover {
+            color: var(--light-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .teachers-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+        }
+
+        /* Subscription Modal Styles */
+        .subscription-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .subscription-box {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .subscription-box.dark-mode {
+            background-color: #2d2d2d;
+            color: white;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--danger-color);
+        }
+
+        .channel-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            margin: 15px 0;
+        }
+
+        .join-btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            margin-top: 15px;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .join-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .subscription-text {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Subscription Modal -->
+    <div class="subscription-modal" id="subscription-modal">
+        <div class="subscription-box" id="subscription-box">
+            <div class="close-btn" id="close-btn">✕</div>
+            <h2>اشترك في قناتنا على تلغرام</h2>
+            <p class="subscription-text">للاستمرار في استخدام المنصة، يرجى الاشتراك في قناتنا على تلغرام للحصول على آخر التحديثات والمحتوى الحصري.</p>
+            <img src="https://i.imghippo.com/files/IyLa8183oYA.jpg" alt="قناة تلغرام" class="channel-image">
+            <a href="https://t.me/uumm20" class="join-btn" target="_blank">
+                <i class="fab fa-telegram"></i> انضم إلى القناة
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img src="https://i.imghippo.com/files/IyLa8183oYA.jpg" alt="Logo">
+                منصة ماكس التعليمية
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="ابحث عن مدرس..." id="search-input">
+            </div>
+            <div>
+                <button class="mode-toggle" id="mode-toggle">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="teachers-section">
+            <h2 class="section-title">
+                <i class="fas fa-chalkboard-teacher"></i>
+                المدرسين لدينا
+            </h2>
+            <div class="teachers-grid" id="teachers-container">
+                <!-- سيتم ملء هذا القسم بالبيانات من localStorage -->
+            </div>
+        </section>
+
+        <section class="lectures-section" id="lectures-section" style="display: none;">
+            <h2 class="section-title" id="lectures-title">
+                <i class="fas fa-book-open"></i>
+                محاضرات الأستاذ
+            </h2>
+            <div class="lectures-list" id="lectures-container">
+                <!-- سيتم ملء هذا القسم بالبيانات من localStorage -->
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            </div>
+            <div class="copyright">جميع الحقوق محفوضه لدى منصة ماكس</div>
+            <a href="https://t.me/max10max10bot" class="telegram-link" target="_blank">
+                <i class="fab fa-telegram"></i>
+                <span>بوت ملازم ماكس</span>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // بيانات التطبيق
+        let teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+        let darkMode = localStorage.getItem('darkMode') === 'true';
+        let subscribed = localStorage.getItem('subscribed') === 'true';
+
+        // عناصر DOM
+        const subscriptionModal = document.getElementById('subscription-modal');
+        const subscriptionBox = document.getElementById('subscription-box');
+        const closeBtn = document.getElementById('close-btn');
+        const teachersContainer = document.getElementById('teachers-container');
+        const lecturesSection = document.getElementById('lectures-section');
+        const lecturesContainer = document.getElementById('lectures-container');
+        const lecturesTitle = document.getElementById('lectures-title');
+        const modeToggle = document.getElementById('mode-toggle');
+        const searchInput = document.getElementById('search-input');
+
+        // تهيئة الوضع الليلي
+        function initDarkMode() {
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.querySelectorAll('.teacher-card').forEach(el => {
+                    el.classList.add('dark-mode');
+                });
+                document.querySelectorAll('.lecture-item').forEach(el => {
+                    el.classList.add('dark-mode');
+                });
+                subscriptionBox.classList.add('dark-mode');
+                modeToggle.textContent = '☀️';
+            }
+        }
+
+        // التحقق من الاشتراك وعرض النافذة إذا لزم الأمر
+        function checkSubscription() {
+            if (!subscribed) {
+                subscriptionModal.style.display = 'flex';
+            } else {
+                subscriptionModal.style.display = 'none';
+            }
+        }
+
+        // تحميل البيانات الأولية
+        function loadData() {
+            renderTeachers();
+            initDarkMode();
+            checkSubscription();
+        }
+
+        // عرض المدرسين مع إمكانية البحث
+        function renderTeachers(searchTerm = '') {
+            teachersContainer.innerHTML = '';
+
+            const filteredTeachers = teachers.filter(teacher => 
+                teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                teacher.desc.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (filteredTeachers.length === 0) {
+                teachersContainer.innerHTML = '<p>لا يوجد مدرسون متاحون حالياً</p>';
+                return;
+            }
+
+            filteredTeachers.forEach(teacher => {
+                const teacherCard = document.createElement('div');
+                teacherCard.className = 'teacher-card';
+                if (darkMode) teacherCard.classList.add('dark-mode');
+                
+                let imageContent = '';
+                if (teacher.image) {
+                    imageContent = `<img src="${teacher.image}" alt="${teacher.name}">`;
+                } else {
+                    imageContent = `<div class="initials">${teacher.name.charAt(0)}</div>`;
+                }
+                
+                teacherCard.innerHTML = `
+                    <div class="teacher-img">
+                        ${imageContent}
+                    </div>
+                    <div class="teacher-info">
+                        <h3 class="teacher-name">${teacher.name}</h3>
+                        <p class="teacher-desc">${teacher.desc}</p>
+                        <a href="#" class="view-btn" data-teacher-id="${teacher.id}">
+                            <i class="fas fa-eye"></i> عرض المحاضرات
+                        </a>
+                    </div>
+                `;
+                teachersContainer.appendChild(teacherCard);
+            });
+
+            // إضافة مستمعي الأحداث
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const teacherId = btn.getAttribute('data-teacher-id');
+                    showTeacherLectures(teacherId);
+                });
+            });
+        }
+
+        // عرض محاضرات مدرس معين
+        function showTeacherLectures(teacherId) {
+            const teacher = teachers.find(t => t.id === teacherId);
+            if (!teacher) return;
+
+            lecturesTitle.textContent = `محاضرات الأستاذ ${teacher.name}`;
+            lecturesContainer.innerHTML = '';
+
+            if (!teacher.lectures || teacher.lectures.length === 0) {
+                lecturesContainer.innerHTML = '<p>لا توجد محاضرات متاحة حالياً</p>';
+            } else {
+                teacher.lectures.forEach(lecture => {
+                    const lectureItem = document.createElement('div');
+                    lectureItem.className = 'lecture-item';
+                    if (darkMode) lectureItem.classList.add('dark-mode');
+                    lectureItem.innerHTML = `
+                        <span class="lecture-title">${lecture.title}</span>
+                        <a href="${lecture.link}" class="lecture-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> الذهاب إلى المحاضرة
+                        </a>
+                    `;
+                    lecturesContainer.appendChild(lectureItem);
+                });
+            }
+
+            lecturesSection.style.display = 'block';
+            window.scrollTo({ top: lecturesSection.offsetTop, behavior: 'smooth' });
+        }
+
+        // تبديل الوضع الليلي/النهاري
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            localStorage.setItem('darkMode', darkMode);
+
+            document.body.classList.toggle('dark-mode');
+            document.querySelectorAll('.teacher-card').forEach(el => {
+                el.classList.toggle('dark-mode');
+            });
+            document.querySelectorAll('.lecture-item').forEach(el => {
+                el.classList.toggle('dark-mode');
+            });
+            subscriptionBox.classList.toggle('dark-mode');
+
+            if (darkMode) {
+                modeToggle.textContent = '☀️';
+            } else {
+                modeToggle.textContent = '🌙';
+            }
+        }
+
+        // البحث عن المدرسين
+        function searchTeachers() {
+            const searchTerm = searchInput.value;
+            renderTeachers(searchTerm);
+        }
+
+        // مستمعي الأحداث
+        modeToggle.addEventListener('click', toggleDarkMode);
+        searchInput.addEventListener('input', searchTeachers);
+        closeBtn.addEventListener('click', () => {
+            // عند النقر على زر الإغلاق، نطلب من المستخدم الاشتراك أولاً
+            alert('يجب الاشتراك في القناة أولاً لاستخدام المنصة');
+        });
+
+        // عند النقر على زر الانضمام للقناة
+        document.querySelector('.join-btn').addEventListener('click', () => {
+            subscribed = true;
+            localStorage.setItem('subscribed', 'true');
+            subscriptionModal.style.display = 'none';
+        });
+
+        // تهيئة التطبيق عند التحميل
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
